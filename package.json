@@ -1,0 +1,35 @@
+{
+  "name": "mycoolproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "backstopjs": "^3.8.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "reference": "node node_modules/backstopjs/cli/index.js reference",
+    "test": "node node_modules/backstopjs/cli/index.js test"
+  },
+  "scripts-iouse": {
+    "build-and-copy-report-bundle": "npm run build-compare && npm run copy-report-bundle",
+    "build-compare": "cp ./node_modules/diverged/src/diverged.js ./compare/output/ && cp ./node_modules/diff/dist/diff.js ./compare/output/ && webpack --config ./compare/webpack.config.js && npm run lint",
+    "copy-report-bundle": "mkdir -p test/configs/backstop_data/html_report && cp compare/output/index_bundle.js test/configs/backstop_data/html_report/",
+    "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
+    "echo": "node ./cli/index.js echo",
+    "format": "prettier-eslint --write \"compare/src/**/*.js\"",
+    "genConfig": "node ./cli/index.js genConfig",
+    "init": "node ./cli/index.js init",
+    "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
+    "kill-zombies": "pkill -f \"(chrome)?(--headless)\"",
+    "lint": "eslint 'compare/*.js' 'compare/src/**/*.js' 'core/**/*.js' 'cli/**/*.js' 'capture/**/*.js' 'test/**/*.js'",
+    "openReport": "node ./cli/index.js openReport",
+    "precommit": "lint-staged",
+    "reference": "node ./cli/index.js reference",
+    "sanity-test": "cd test/configs/ && node ../../cli/index.js test",
+    "smoke-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features",
+    "unit-test": "mocha --reporter spec --recursive 'test/**/*_spec.js'"
+  },
+  "author": "",
+  "license": "ISC"
+}
